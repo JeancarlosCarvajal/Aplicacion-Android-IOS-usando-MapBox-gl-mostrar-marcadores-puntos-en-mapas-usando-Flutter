@@ -9,6 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
+.env
 
 # IntelliJ related
 *.iml
@@ -32,8 +33,9 @@ migrate_working_dir/
 .pub/
 /build/
 
-# Web related
+# Web relatedgit
 lib/generated_plugin_registrant.dart
+android/gradle.properties
 
 # Symbolication related
 app.*.symbols
@@ -46,4 +48,3 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /lib/src/api_key
-android/gradle.properties
