@@ -1,20 +1,55 @@
 buildscript {
-    ext.kotlin_version = '1.6.10'
+    ext.kotlin_version = '1.6.10'  
     repositories {
         google()
         mavenCentral()
+
+        // INICIO Lo coloque por  https://docs.mapbox.com/android/maps/guides/install/#add-the-dependency 
+        // maven {
+        //     url 'https://api.mapbox.com/downloads/v2/releases/maven'
+        //     authentication {
+        //         basic(BasicAuthentication)
+        //     }
+        //     credentials {
+        //         // Do not change the username below.
+        //         // This should always be `mapbox` (not your username).
+        //         username = "mapbox"
+        //         // Use the secret token you stored in gradle.properties as the password
+        //         password = MAPBOX_DOWNLOADS_TOKEN
+        //     }
+        // }
+        // FIN Lo coloque por  https://docs.mapbox.com/android/maps/guides/install/#add-the-dependency 
+
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" 
     }
+
 }
 
 allprojects {
     repositories {
         google()
-        mavenCentral()
+        mavenCentral() 
+
+        // INICIO Lo coloque por  https://docs.mapbox.com/android/maps/guides/install/#add-the-dependency 
+        maven {
+            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+            authentication {
+                basic(BasicAuthentication)
+            }
+            credentials {
+                // Do not change the username below.
+                // This should always be `mapbox` (not your username).
+                username = "mapbox"
+                // Use the secret token you stored in gradle.properties as the password
+                password = MAPBOX_DOWNLOADS_TOKEN
+            }
+        }
+        // FIN Lo coloque por  https://docs.mapbox.com/android/maps/guides/install/#add-the-dependency 
+        
     }
 }
 
