@@ -18,12 +18,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Material App',
-      home: Scaffold(
-        body: FullScreenMap(),
-      ),
+      title: 'Material App', 
+      initialRoute: 'home',
+      routes: {
+        'home'   : ( _ ) => const FullScreenMap(), 
+      },
     );
   }
 }
