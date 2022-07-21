@@ -1,7 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 class FullScreenMap extends StatefulWidget {
    
   const FullScreenMap({Key? key}) : super(key: key);
@@ -16,8 +20,37 @@ class _FullScreenMapState extends State<FullScreenMap> {
 
     _onMapCreated(MapboxMapController controller) {
       mapController = controller;
+      _onStyleLoaded();
     }
- 
+
+    void _onStyleLoaded() {
+      addImageFromAsset("assetImage", "assets/symbols/custom-icon.png");
+      addImageFromUrl("networkImage", Uri.parse("https://via.placeholder.com/50"));
+      mapController?.addSymbol(SymbolOptions(
+        // zIndex: 3,
+        geometry: center,
+        iconSize: 3,
+        iconOffset: Offset(0, 15),
+        iconImage: 'assetImage', // assetImage networkImage
+        iconColor: '#f10404',
+        textField: 'Montana Creada',
+        textColor: '#f10404',
+        fontNames: ['DIN Offc Pro Bold', 'Arial Unicode MS Regular'],               
+      ));
+    }
+
+    // Adds an asset image to the currently displayed style
+    Future<void> addImageFromAsset(String name, String assetName) async {
+      final ByteData bytes = await rootBundle.load(assetName);
+      final Uint8List list = bytes.buffer.asUint8List();
+      return mapController!.addImage(name, list);
+    }
+
+    // Adds a network image to the currently displayed style
+    Future<void> addImageFromUrl(String name, Uri uri) async {
+      var response = await http.get(uri);
+      return mapController!.addImage(name, response.bodyBytes);
+    }
 
     final LatLng center = LatLng(10.1923226, -64.6841399);
 
@@ -74,16 +107,17 @@ class _FullScreenMapState extends State<FullScreenMap> {
             // backgroundColor: Colors.green,
             child: const Icon(Icons.emoji_symbols_sharp),
             onPressed: () {
-              mapController?.addSymbol(SymbolOptions(
-                zIndex: 3,
-                geometry: center,
-                iconSize: 3,
-                iconImage: 'fast-food-15',
-                iconColor: '#f10404',
-                textField: 'Montana Creada',
-                textColor: '#f10404',
-                fontNames: ['DIN Offc Pro Bold', 'Arial Unicode MS Regular'],               
-              ));
+                mapController?.addSymbol(SymbolOptions(
+                  // zIndex: 3,
+                  geometry: center,
+                  iconSize: 3,
+                  iconOffset: Offset(0, 15),
+                  iconImage: 'assetImage', // assetImage networkImage
+                  iconColor: '#f10404',
+                  textField: 'Montana Creada',
+                  textColor: '#f10404',
+                  fontNames: ['DIN Offc Pro Bold', 'Arial Unicode MS Regular'],               
+                ));
               setState(() {
                 print('Haciendo Pin');
               });
@@ -98,6 +132,7 @@ class _FullScreenMapState extends State<FullScreenMap> {
                 ? selectedStyle = streetStyle
                 : selectedStyle = oscuroStyle;
               setState(() { 
+                // _onStyleLoaded();
                 print(selectedStyle);
               });
             },
